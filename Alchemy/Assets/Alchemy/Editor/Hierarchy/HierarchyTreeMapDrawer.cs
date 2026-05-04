@@ -3,6 +3,12 @@ using Alchemy.Hierarchy;
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_2022_2_OR_NEWER
+using HierarchyItemId = UnityEngine.EntityId;
+#else
+using HierarchyItemId = System.Int32;
+#endif
+
 namespace Alchemy.Editor
 {
     public class HierarchyTreeMapDrawer : HierarchyDrawer
@@ -61,9 +67,9 @@ namespace Alchemy.Editor
             }
         }
 
-        public override void OnGUI(int instanceID, Rect selectionRect)
+        public override void OnGUI(HierarchyItemId hierarchyItemId, Rect selectionRect)
         {
-            var gameObject = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
+            var gameObject = GetGameObject(hierarchyItemId);
             if (gameObject == null) return;
 
             var settings = AlchemySettings.GetOrCreateSettings();

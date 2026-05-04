@@ -2,6 +2,12 @@ using System;
 using System.Linq;
 using UnityEditor;
 
+#if UNITY_2022_2_OR_NEWER
+using HierarchyItemId = UnityEngine.EntityId;
+#else
+using HierarchyItemId = System.Int32;
+#endif
+
 namespace Alchemy.Editor
 {
     internal static class HierarchyDrawerInitializer
@@ -15,7 +21,11 @@ namespace Alchemy.Editor
 
             foreach (var drawer in drawers)
             {
+#if UNITY_2022_2_OR_NEWER
+                EditorApplication.hierarchyWindowItemByEntityIdOnGUI += drawer.OnGUI;
+#else
                 EditorApplication.hierarchyWindowItemOnGUI += drawer.OnGUI;
+#endif
             }
         }
     }

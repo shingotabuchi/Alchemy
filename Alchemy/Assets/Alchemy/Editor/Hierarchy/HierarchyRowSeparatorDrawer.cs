@@ -1,11 +1,17 @@
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_2022_2_OR_NEWER
+using HierarchyItemId = UnityEngine.EntityId;
+#else
+using HierarchyItemId = System.Int32;
+#endif
+
 namespace Alchemy.Editor
 {
     public class HierarchyRowSeparatorDrawer : HierarchyDrawer
     {
-        public override void OnGUI(int instanceID, Rect selectionRect)
+        public override void OnGUI(HierarchyItemId hierarchyItemId, Rect selectionRect)
         {
             var settings = AlchemySettings.GetOrCreateSettings();
             if (!settings.ShowSeparator) return;
